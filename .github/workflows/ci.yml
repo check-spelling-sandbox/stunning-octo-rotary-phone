@@ -10,22 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        exit:
-        - 1
-        - 0
+        color:
+        - red
+        - green
       fail-fast: false
-      
+    name: ${{ matrix.color }}
     steps:
       - name: exit
-        env:
-          code: ${{ matrix.exit }}
-        run: exit $code
+        run: exit $(( $RANDOM % 2 ))
 
   validate:
     needs:
     - build
     runs-on: ubuntu-latest
-    if: success() || failure()
     steps:
       - name: check
         env:
