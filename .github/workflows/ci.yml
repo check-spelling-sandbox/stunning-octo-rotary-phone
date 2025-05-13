@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        exit:
+        - 1
+        - 0
+      fail-fast: false
+      
+    steps:
+      - name: exit
+        env:
+          code: ${{ matrix.exit }}
+        run: exit $code
+
+  validate:
+    needs:
+    - build
+    runs-on: ubuntu-latest
+    steps:
+      - name: check
+        env:
+          result: ${{ needs.build.result }}
+        run: |
+          echo result: $result | tee -a $GITHUB_STEP_SUMMARY
