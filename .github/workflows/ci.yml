@@ -25,6 +25,7 @@ jobs:
     needs:
     - build
     runs-on: ubuntu-latest
+    if: success() || failure()
     steps:
       - name: check
         env:
